@@ -1,7 +1,7 @@
 # MMM-PVoutput
 PVOutput module for MagicMirror
 
-```
+```js
 {
 	module: 'MMM-PVoutput',
 	position: 'lower_third',
@@ -21,3 +21,12 @@ PVOutput module for MagicMirror
 	}
 }
 ```
+
+# Heavily changed:
+
+* Now using https://www.chartjs.org to create the chart
+* Now using the `#http_fetcher` from the base to fetch the data
+
+# An example graph from my sytem on a cloudy day
+
+![Screenshot](PVoutput_screenshot.png "Screenshot")
