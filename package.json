@@ -1,0 +1,51 @@
+{
+  "name": "mmm-pvoutput",
+  "version": "2.0.0",
+  "description": "Charting module for your PVoutput status data",
+  "keywords": [
+    "MagicMirror",
+    "MagicMirror Module",
+    "electricity chart",
+    "energy",
+    "smart home",
+    "dashboard",
+    "home automation",
+    "electricity consumption",
+    "energy monitoring"
+  ],
+  "homepage": "https://github.com/mw46d/MMM-PVoutput",
+  "bugs": {
+    "url": "https://github.com/mw46d/MMM-PVoutput/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/late4marshmellow/MMM-EUElectricityPrice"
+  },
+  "license": "MIT",
+  "author": "Marco Walther, mw46d",
+  "contributors": [
+    {
+      "name": "Martin ?, mrvanes - Original Author"
+    }
+  ],
+  "main": "MMM-PVoutput.js",
+  "dependencies": {
+    "chart.js": "^4"
+  },
+  "devDependencies": {
+    "@eslint/css": "^0.10.0",
+    "@eslint/js": "^9.31.0",
+    "@eslint/markdown": "^7.0.0",
+    "@stylistic/eslint-plugin": "^5.1.0",
+    "eslint": "^9.31.0",
+    "eslint-plugin-import-x": "^4.16.1",
+    "eslint-plugin-package-json": "^0.91.1",
+    "eslint-plugin-playwright": "^2.10.1",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2"
+  },
+  "scripts": {
+    "lint": "prettier --check . && eslint",
+    "lint:fix": "prettier --write . && eslint --fix"
+  }
+}
