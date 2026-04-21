@@ -7,8 +7,9 @@
  * Heavily changed by Marco Walther
  */
 
+const path = require("node:path");
 const NodeHelper = require("node_helper");
-const HTTPFetcher = require("#http_fetcher");
+const HTTPFetcher = require(`${global.root_path}/js/http_fetcher`);
 const Log = require("logger");
 
 module.exports = NodeHelper.create({
