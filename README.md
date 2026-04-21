@@ -30,3 +30,12 @@ PVOutput module for MagicMirror
 # An example graph from my sytem on a cloudy day
 
 ![Screenshot](PVoutput_screenshot.png "Screenshot")
+
+* Green are the generated power & energy
+* Blue are the 'used' power & energy. They include the charging of the
+  battery. The power line is mostly hidden behind the 'generation power'
+  until the battery is completely charged.
+* Red are the actual usage power & eneregy of the home. They use
+  extented data points for PVoutput, so they would only be available
+  with a donation-account. I'm using v7 for the 'home power' and v12 for
+  the 'home energy'.
