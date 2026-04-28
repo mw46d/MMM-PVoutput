@@ -138,10 +138,10 @@ Module.register("MMM-PVoutput", {
     }
 
     // Build chart (guarded)
-    let myChart = null;
+    // let myChart = null;
 
     try {
-      datasets = [
+      const datasets = [
         {
           borderColor: this.config.generationPowerLineColor,
           backgroundColor: this.config.generationPowerLineColor,
@@ -211,7 +211,7 @@ Module.register("MMM-PVoutput", {
           yAxisID: "yWhaxis",
         });
       }
-      myChart = new Chart(canvas, {
+      const myChart = new Chart(canvas, {
         type: "line",
         data: {
           labels: this.payload.timeStamps,
@@ -279,7 +279,7 @@ Module.register("MMM-PVoutput", {
       return wrapper;
     }
 
-    myChart.update("none");
+    // myChart.update("none");
 
     chart.appendChild(canvas);
     wrapper.appendChild(chart);
