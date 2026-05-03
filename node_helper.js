@@ -23,6 +23,21 @@ module.exports = NodeHelper.create({
     Log.info(`Starting node helper for: ${this.name}`);
   },
 
+  // MagicMirror lifecycle hook called when the helper is stopped.
+  stop: function () {
+    this.cleanupFetcher();
+  },
+
+  cleanupFetcher: function () {
+    if (this.fetcher) {
+      this.fetcher.removeAllListeners();
+      if (typeof this.fetcher.stop === "function") {
+        this.fetcher.stop();
+      }
+      this.fetcher = null;
+    }
+  },
+
   // Override socketNotificationReceived method.
   socketNotificationReceived: function (notification, payload) {
     if (notification === "INIT_PVONLINE") {
@@ -31,6 +46,9 @@ module.exports = NodeHelper.create({
   },
 
   initPvOnline: function (payload) {
+    // Stop and clean up any existing fetcher before creating a new one
+    this.cleanupFetcher();
+
     let url = "http://pvoutput.org/service/r2/getstatus.jsp";
     url += "?h=1";
     url += "&asc=1";

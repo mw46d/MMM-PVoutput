@@ -51,6 +51,10 @@ Module.register("MMM-PVoutput", {
 
     this.error = false;
     this.payload = false;
+    this.chart = null;
+    this.errorRetryTimer = null;
+    this.chartLibRetryTimer = null;
+    this.chartInitRetryTimer = null;
 
     this.sendSocketNotification("INIT_PVONLINE", {
       sid: this.config.sid,
@@ -58,6 +62,20 @@ Module.register("MMM-PVoutput", {
       updateInterval: this.config.updateInterval,
       extData: this.config.extData,
     });
+  },
+
+  // MagicMirror lifecycle hook called when the module is stopped/hidden.
+  stop: function () {
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = null;
+    }
+    clearTimeout(this.errorRetryTimer);
+    clearTimeout(this.chartLibRetryTimer);
+    clearTimeout(this.chartInitRetryTimer);
+    this.errorRetryTimer = null;
+    this.chartLibRetryTimer = null;
+    this.chartInitRetryTimer = null;
   },
 
   // Define required scripts.
@@ -83,7 +101,8 @@ Module.register("MMM-PVoutput", {
     this.payload = false;
     this.errorMessage = message || this.config.errorMessage;
     this.updateDom();
-    setTimeout(() => this.scheduleUpdate(), 30 * 60 * 1000);
+    clearTimeout(this.errorRetryTimer);
+    this.errorRetryTimer = setTimeout(() => this.scheduleUpdate(), 30 * 60 * 1000);
   },
 
   getDecimalPlaces: function () {
@@ -121,24 +140,29 @@ Module.register("MMM-PVoutput", {
     if (typeof Chart === "undefined") {
       wrapper.innerHTML = "Loading chart library...";
       wrapper.className = "dimmed light small";
-      setTimeout(() => this.updateDom(), 3000);
+      clearTimeout(this.chartLibRetryTimer);
+      this.chartLibRetryTimer = setTimeout(() => this.updateDom(), 3000);
       return wrapper;
+    }
+
+    // Destroy previous Chart instance before creating a new one
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = null;
     }
 
     // --- Chart DOM ---
     const chart = document.createElement("div");
     chart.className = "small light";
     const canvas = document.createElement("canvas");
-    canvas.id = "PVOnlineGraph";
+    // Use a unique ID per module instance to avoid conflicts with multiple instances
+    canvas.id = `PVOnlineGraph_${this.identifier}`;
     if (wrapper.style.width) {
       canvas.width = wrapper.style.width.replace(/px$/, "");
     }
     if (wrapper.style.height) {
       canvas.height = wrapper.style.height.replace(/px$/, "");
     }
-
-    // Build chart (guarded)
-    // let myChart = null;
 
     try {
       const datasets = [
@@ -211,7 +235,7 @@ Module.register("MMM-PVoutput", {
           yAxisID: "yWhaxis",
         });
       }
-      const myChart = new Chart(canvas, {
+      this.chart = new Chart(canvas, {
         type: "line",
         data: {
           labels: this.payload.timeStamps,
@@ -275,11 +299,10 @@ Module.register("MMM-PVoutput", {
       console.error("Chart init failed, retrying:", err);
       wrapper.innerHTML = "Initializing chart…";
       wrapper.className = "dimmed light small";
-      setTimeout(() => this.updateDom(), 1500);
+      clearTimeout(this.chartInitRetryTimer);
+      this.chartInitRetryTimer = setTimeout(() => this.updateDom(), 1500);
       return wrapper;
     }
-
-    // myChart.update("none");
 
     chart.appendChild(canvas);
     wrapper.appendChild(chart);
