@@ -166,6 +166,25 @@ module.exports = NodeHelper.create({
       my_time += 5;
     }
 
+    // 15 minutes 'buffer' for delays.
+    const now = new Date();
+    const now_h = now.getHours();
+    const now_m = now.getMinutes();
+    while (my_time < (now_h * 60 + now_m - 15)) {
+      generationPower.push(null);
+      generationEnergy.push(null);
+      consumptionPower.push(null);
+      consumptionEnergy.push(null);
+      homePower.push(null);
+      homeEnergy.push(null);
+      const m = my_time % 60;
+      const h = (my_time - m) / 60;
+      const hhmm = (h < 10 ? "0" : "") + h.toString() + ":" + (m < 10 ? "0" : "") + m.toString();
+      timeStamps.push(hhmm);
+      Log.info(`node_helper:processData() add missing ${my_time} -> ${hhmm}, now= ${now.toString()}, t_values= ${now_h}, ${now_m}`);
+      my_time += 5;
+    }
+
     self.sendSocketNotification("NEW_PVONLINE_DATA", {
       generationPower: generationPower,
       generationEnergy: generationEnergy,
