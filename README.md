@@ -72,3 +72,8 @@ The other options have reasonable defaults.
   extented data points for PVoutput, so they would only be available
   with a donation-account. I'm using v7 for the 'home power' and v12 for
   the 'home energy'.
+
+![Screenshot](PVoutput_screenshot_missing.png "Screenshot missing data")
+
+- Here is a time range, where I did not push any data to PVOutput. There
+  was a problem with MQTT and the reconnect did not work as expected.
