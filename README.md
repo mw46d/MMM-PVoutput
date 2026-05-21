@@ -25,7 +25,7 @@ npm install  --omit=dev
 Go to the MagicMirror/config directory and edit the config.js file.
 Add the module to your modules array in your config.js.
 
-Enter as minimimum  your `sid` & `apiKey` in the config.js for your MagicMirror installation.
+Enter at minimum your `sid` & `apiKey` in the config.js for your MagicMirror installation.
 The other options have reasonable defaults.
 
 
@@ -60,7 +60,7 @@ The other options have reasonable defaults.
 ```
 
 
-## An example graph from my sytem on a cloudy day
+## An example graph from my system on a cloudy day
 
 ![Screenshot](PVoutput_screenshot.png "Screenshot")
 
@@ -69,8 +69,8 @@ The other options have reasonable defaults.
   battery. The power line is mostly hidden behind the 'generation power'
   until the battery is completely charged.
 - Red are the actual usage power & eneregy of the home. They use
-  extented data points for PVoutput, so they would only be available
-  with a donation-account. I'm using v7 for the 'home power' and v12 for
+  extended data points for PVoutput, so they would only be available
+  with a donation account. I'm using v7 for the 'home power' and v12 for
   the 'home energy'.
 
 ![Screenshot](PVoutput_screenshot_missing.png "Screenshot missing data")
