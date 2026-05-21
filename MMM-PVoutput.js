@@ -293,6 +293,7 @@ Module.register("MMM-PVoutput", {
               },
             },
           },
+          spanGaps: true,
         },
       });
     } catch (err) {

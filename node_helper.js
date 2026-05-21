@@ -121,8 +121,29 @@ module.exports = NodeHelper.create({
     //                                                                11 (v7) - House Power (W)
     //                                                                                         16 (v12) - House Energy (Wh)
 
+    // Log.info(`node_helper:processData()`);
+    let my_time = 0;
     for (let i = 0; i < lines.length; i++) {
       const values = lines[i].split(",");
+      const t_values = values[1].split(":");
+      const t_h = parseInt(t_values[0]);
+      const t_m = parseInt(t_values[1]);
+
+      while (my_time < (t_h * 60 + t_m)) {
+        generationPower.push(null);
+        generationEnergy.push(null);
+        consumptionPower.push(null);
+        consumptionEnergy.push(null);
+        homePower.push(null);
+        homeEnergy.push(null);
+        const m = my_time % 60;
+        const h = (my_time - m) / 60;
+        const hhmm = (h < 10 ? "0" : "") + h.toString() + ":" + (m < 10 ? "0" : "") + m.toString();
+        timeStamps.push(hhmm);
+        // Log.info(`node_helper:processData() add missing ${my_time} -> ${hhmm}, values[1]= ${values[1]}, t_values= ${t_h}, ${t_m}`);
+        my_time += 5;
+      }
+
       curGenerationEnergy = (values[2] == "NaN" ? 0 : values[2]) / 1000.0;
       curGenerationPower = (values[4] == "NaN" ? 0 : values[4]) / 1000.0;
       curConsumptionEnergy = (values[7] == "NaN" ? 0 : values[7]) / 1000.0;
@@ -142,6 +163,7 @@ module.exports = NodeHelper.create({
       homePower.push(curHomePower);
       homeEnergy.push(curHomeEnergy);
       timeStamps.push(values[1]);
+      my_time += 5;
     }
 
     self.sendSocketNotification("NEW_PVONLINE_DATA", {
